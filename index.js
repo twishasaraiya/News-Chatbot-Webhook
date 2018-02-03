@@ -4,7 +4,7 @@ const http = require('http');
 
 const app = express();
 
-app.post('/get-reponse',function(req,res){
+app.post('/get-response',function(req,res){
   var response = "this is a sample reponse from webhook";
     return res.json({
       "speech": repsonse,
