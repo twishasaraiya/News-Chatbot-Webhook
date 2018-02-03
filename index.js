@@ -4,15 +4,11 @@ const http = require('http');
 
 const app = express();
 
-app.get('/',function(req,res){
-    res.send('Hello');
-});
-
 app.post('/',function(req,res){
   let response = "this is a sample reponse from webhook";
     return res.json({
-      speech: repsonse,
-      displayText: reponse
+      "speech": repsonse,
+      "displayText": reponse
     });
 });
 
