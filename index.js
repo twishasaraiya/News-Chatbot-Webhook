@@ -27,9 +27,9 @@ app.post('/webhook',(req,res) => {
   var url = encodeURI("https://newsapi.org/v2/top-headlines?q=" + topicToSearch + '&sortBy=popularity&apiKey=' + apiKey);
 
   https.get(url, (responseFromApi) => {
-    console.log(responseFromApi);
+    //console.log(responseFromApi);
     responseFromApi.on('data',function(newsData){
-        var response = " I have " + newsData.totalResults + "for you!";
+        var response = " I have " + toString(newsData.totalResults) + "news stories for you!";
         res.status(200).json({
           speech: response,
           displayText: response,
