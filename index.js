@@ -29,7 +29,8 @@ app.post('/webhook',(req,res) => {
   https.get(url, (responseFromApi) => {
     //console.log(responseFromApi);
     responseFromApi.on('data',function(newsData){
-        var response = " I have " + toString(newsData.totalResults) + "news stories for you!";
+      console.log(newsData);
+        var response = " I have " + newsData.totalResults.toString() + "news stories for you!";
         res.status(200).json({
           speech: response,
           displayText: response,
