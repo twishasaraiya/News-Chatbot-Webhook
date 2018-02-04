@@ -3,7 +3,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express().use(bodyParser.json());
-const http = require('http');
+const https = require('https');
 const apiKey='028e0789cb204e8abb4b48f867ffd96b';
 
 
@@ -26,7 +26,7 @@ app.post('/webhook',(req,res) => {
 
   var url = encodeURI("https://newsapi.org/v2/top-headlines?q=" + topicToSearch + '&sortBy=popularity&apiKey=' + apiKey);
 
-  http.get(url, (responseFromApi) => {
+  https.get(url, (responseFromApi) => {
     console.log(responseFromApi);
     responseFromApi.on('data',function(newsData){
         var response = " I have " + newsData.totalResults + "for you!";
