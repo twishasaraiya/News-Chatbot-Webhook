@@ -4,6 +4,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express().use(bodyParser.json());
 const http = require('http');
+const apiKey='028e0789cb204e8abb4b48f867ffd96b';
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -16,10 +18,31 @@ app.get('/',(req,res) => {
 });
 
 app.post('/webhook',(req,res) => {
-  console.log(req.body);
-  var response = "this is a sample webhook response";
-  res.status(200).json({
-    speech: response,
-    displayText: response,
+  //console.log(req.body);
+  //CALL NEWS API AND EXTRACT PARAMETERS FROM REQ.BODY.PARAMETERS
+  var topicToSearch = req.body.result.parameters.Topics ? req.body.result.parameters.Topics : 'tech' ;
+
+  var country = req.body.result.parameters.geo-country ? req.body.result.parameters.geo-country : 'India';
+
+  var url = encodeURI("https://newsapi.org/v2/top-headlines?q=" + topicToSearch + '&sortBy=popularity&apiKey=' + apiKey);
+
+  http.get(url, (responseFromApi) => {
+    console.log(responseFromApi);
+    responseFromApi.on('data',function(newsData){
+        var response = " I have " + newsData.totalResults + "for you!";
+        res.status(200).json({
+          speech: response,
+          displayText: response,
+        });
+    });
+
+  },(error) =>{
+
+    var response = "this is a sample webhook response";
+    res.status(200).json({
+      speech: response,
+      displayText: response,
+    });
+
   });
 });
