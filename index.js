@@ -18,9 +18,8 @@ app.get('/',(req,res) => {
 app.post('/webhook',(req,res) => {
   console.log(req.body);
   var response = "this is a sample webhook response";
-  res.setHeader('Content-Type','application/json');
-  res.send(JSON.stringify({
-    speech:response,
-    displayText:response
-  }));
+  res.status(200).json({
+    speech: response,
+    displayText: response,
+  });
 });
