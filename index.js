@@ -1,29 +1,26 @@
+'use strict';
+
 const express = require('express');
-const bodyparser = require('body-parser');
+const bodyParser = require('body-parser');
+const app = express().use(bodyParser.json());
 const http = require('http');
 
-const app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/',function(req,res){
-  var response = "this is a sample reponse from webhook";
-  console.log(req);
-  console.log(response);
-    return res.json({
-      "speech": repsonse,
-      "displayText": reponse
-    });
+app.listen(process.env.PORT || 1337 , () => {
+  console.log('webhook is listening');
 });
 
-app.post('/get-response',function(req,res){
-  var response = "this is a sample reponse from webhook";
-  console.log(req);
-  console.log(response);
-    return res.json({
-      "speech": repsonse,
-      "displayText": reponse
-    });
+app.get('/',(req,res) => {
+    res.send('hello World!!');
 });
 
-app.listen((process.env.PORT || 8000),function(){
-  console.log('Server is up and running');
+app.post('/webhook',(req,res) => {
+  console.log(req.body);
+  var response = "this is a sample webhook response";
+  res.setHeader('Content-Type','application/json');
+  res.send(JSON.stringify({
+    speech:reponse,
+    displayText:response
+  }));
 });
