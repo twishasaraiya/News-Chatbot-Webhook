@@ -20,7 +20,7 @@ app.post('/webhook',(req,res) => {
   var response = "this is a sample webhook response";
   res.setHeader('Content-Type','application/json');
   res.send(JSON.stringify({
-    speech:reponse,
+    speech:response,
     displayText:response
   }));
 });
