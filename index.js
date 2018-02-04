@@ -29,7 +29,7 @@ app.post('/webhook',(req,res) => {
   https.get(url, (responseFromApi) => {
     //console.log(responseFromApi);
     responseFromApi.on('data',function(newsData){
-      console.log(newsData);
+      console.log(newsData.totalResults);
       var num =10;
         var response = " I have " + num.toString() + " news stories for you!";
         res.status(200).json({
