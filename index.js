@@ -4,6 +4,16 @@ const http = require('http');
 
 const app = express();
 
+app.get('/',function(req,res){
+  var response = "this is a sample reponse from webhook";
+  console.log(req);
+  console.log(response);
+    return res.json({
+      "speech": repsonse,
+      "displayText": reponse
+    });
+});
+
 app.post('/get-response',function(req,res){
   var response = "this is a sample reponse from webhook";
   console.log(req);
