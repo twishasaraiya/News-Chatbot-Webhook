@@ -30,10 +30,6 @@ app.post('/webhook',(req,res) => {
     //console.log(responseFromApi);
     let body="";
     responseFromApi.on('newsData',(newsData) => {
-      body+=data;
-    });
-
-    responseFromApi.on("end",()=>{
       body=JSON.parse(body);
       var num=body.totalResults;
       console.log('num=',num);
