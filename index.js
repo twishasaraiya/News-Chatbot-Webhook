@@ -3,7 +3,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express().use(bodyParser.json());
-const https = require('https');
+const http = require('http');
 const apiKey='028e0789cb204e8abb4b48f867ffd96b';
 
 
@@ -13,30 +13,53 @@ app.listen(process.env.PORT || 1337 , () => {
   console.log('webhook is listening');
 });
 
-app.get('/',(req,res) => {
-    res.send('hello World!!');
-});
-
 app.post('/webhook',(req,res) => {
-  //console.log(req.body);
+  console.log(req.body);
   //CALL NEWS API AND EXTRACT PARAMETERS FROM REQ.BODY.PARAMETERS
-  var topicToSearch = req.body.result.parameters.Topics ? req.body.result.parameters.Topics : 'tech' ;
+  console.log(req.body.result.parameters.Topics);
+  var topicToSearch = req.body.result.parameters.Topics ? req.body.result.parameters.Topics : 'technology' ;
 
-  //var country = req.body.result.parameters.geo-country ? req.body.result.parameters.geo-country : 'in';
+  console.log(topicToSearch);
+  var country = req.body.result.parameters.geo-country ? req.body.result.parameters.geo-country : 'in';
 
-  var url = encodeURI("https://newsapi.org/v2/top-headlines?country=in&q=" + topicToSearch + '&sortBy=popularity&apiKey=' + apiKey);
+  var url = encodeURI("http://newsapi.org/v2/top-headlines?country=in&apiKey=" + apiKey);
 
-  https.get(url, (responseFromApi) => {
+  console.log(url);
+  http.get(url, (responseFromApi) => {
     //console.log(responseFromApi);
     let body="";
-    responseFromApi.on('newsData',(newsData) => {
+    responseFromApi.on('data',(newsData) => {
+      body+=newsData;
+    });
+
+    responseFromApi.on("end",()=>{
       body=JSON.parse(body);
+      //console.log(body);
       var num=body.totalResults;
+      console.log(num);
       console.log('num=',num);
       var response = " Okay I found " + num.toString() + " news stories for you!";
-      res.status(200).json({
-        speech:response,
-        displayText:response
+      var items=[];
+      body.articles.forEach((news)=>{
+          var obj={};
+          obj['description']=news.description;
+          obj['image']={
+            "url":news.urlToImage
+          };
+          obj['url']=news.url;
+          obj['title']=news.title;
+        //  console.log(obj);
+          items.push(obj);
+      });
+      //console.log(items);
+      res.json({
+        "messages":[
+          {
+            "platform":"google",
+            "items": items,
+            "type":"carousel_card"
+          }
+        ]
       });
     });
 
