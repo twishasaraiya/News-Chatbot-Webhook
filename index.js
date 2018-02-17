@@ -99,13 +99,13 @@ app.post('/webhook',(req,res) => {
 
           res.json({
             "displayText":"Okay here is some news for you!!",
-            "messages":[
+            /*"messages":[
               {
                 "platform":"google",
                 "items":items,
                 "type":"carousel_card"
               }
-            ],
+            ],*/
             "data":{
               "facebook":  {
                   "attachment":{
