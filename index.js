@@ -82,16 +82,14 @@ app.post('/webhook',(req,res) => {
                 "type":"carousel_card"
               },
               {
-                "platform":"google",
-                "suggestions":[
-                  {
-                    "title":"Chip one"
-                  },
-                  {
-                    "title":"Chip Two"
+                "platform":"facebook",
+                "attachment":{
+                  "type":"template",
+                  "payload":{
+                    "template_type":"generic",
+                    "elements":items
                   }
-                ],
-                "type":"suggestion_chips"
+                }
               }
             ]
           });
