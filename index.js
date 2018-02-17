@@ -13,6 +13,26 @@ app.listen(process.env.PORT || 1337 , () => {
   console.log('webhook is listening');
 });
 
+
+//messenger platform webhook verification
+app.get('/webhook',(req,res)=>{
+    let VERIFY_TOKEN = "abc";
+
+    let mode = req.query['hub.mode'];
+    let token = req.query['hub.verify_token'];
+    let challenge =req.query['hub.challenge'];
+
+    if(mode && token){
+      if(mode == 'subscribe' && token === VERIFY_TOKEN){
+        console.log('WEBHOOK VERIFIED');
+        res.status(200).send(challenge);
+      }
+    }else{
+      res.send(403);
+    }
+});
+
+// receives all webhook events
 app.post('/webhook',(req,res) => {
   console.log(req.body);
   //CALL NEWS API AND EXTRACT PARAMETERS FROM REQ.BODY.PARAMETERS
