@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const app = express().use(bodyParser.json());
 const http = require('http');
 const apiKey='028e0789cb204e8abb4b48f867ffd96b';
+const page_access_token="EAAIYLFF6ZBboBANMA5De9CdzDQ6iQ0IZB13pDQ0K2gAgtbzZAXxVzbQwlWn8zZBDY94wNTtZCtbBd0NBMWmzUN1RdfvaiZA5AwHMxgUyFx9Y0hR4jdPDq13hzr4nMBQUgxOx0M76M4jZBkcNMMTnKVxpLvDMKosJ4mK7rNTnQ1Y5QZDZD";
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -35,6 +36,29 @@ app.get('/webhook',(req,res)=>{
 // receives all webhook events
 app.post('/webhook',(req,res) => {
   console.log(req.body);
+
+  let body = req.body;
+  if(body.object == 'page'){
+    body.entry.forEach((entry)=>{
+
+        //body of the webhook event
+        let webhook_event = entry.messaging[0];
+        console.log(webhook_event);
+
+        //get sender PSID
+        let sender_psid = webhook_event.sender.id;
+        console.log('Sender PSID:'+sender_psid);
+    });
+
+    res.status(200).send('EVENT_RECEIVED');
+  }else{
+    res.sendStatus(404);
+  }
+
+});
+
+
+function handleMessage(sender_psid,received_message){
   //CALL NEWS API AND EXTRACT PARAMETERS FROM REQ.BODY.PARAMETERS
   const ACTION=req.body.result.action;
   console.log('action',ACTION);
@@ -132,5 +156,12 @@ app.post('/webhook',(req,res) => {
 
     });
   }
+}
 
-});
+function handlePostback(sender_psid,received_postback){
+
+}
+
+function call sendAPI(sender_psid,response){
+
+}
