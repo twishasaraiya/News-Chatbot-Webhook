@@ -63,8 +63,10 @@ app.post('/webhook',(req,res) => {
           console.log(num);
 
           var items = [];
+          var elements=[];
           body.articles.forEach((news)=>{
             var obj={};
+            var obj1={};
             obj['description']=news.description;
             obj['image']={
               "url":news.urlToImage
@@ -72,7 +74,29 @@ app.post('/webhook',(req,res) => {
             obj['url']=news.url;
             obj['title']=news.title;
             items.push(obj);
+
+            obj1['title']=news.title;
+
+            obj1['image_url']=news.urlToImage;
+            obj1['default_action']={
+              "type":"web_url",
+              "url":news.url,
+              "messenger_extensions":false,
+              "webview_height_ratio":"tall"
+            };
+            obj1['buttons']=[
+              {
+                "type":"web_url",
+                "url":news.url,
+                "title":"Read More"
+              }
+            ];
+
+            elements.push(obj1);
           });
+
+
+
           res.json({
             "displayText":"Okay here is some news for you!!",
             "messages":[
@@ -80,18 +104,19 @@ app.post('/webhook',(req,res) => {
                 "platform":"google",
                 "items":items,
                 "type":"carousel_card"
-              },
-              {
-                "platform":"facebook",
-                "attachment":{
-                  "type":"template",
-                  "payload":{
-                    "template_type":"generic",
-                    "elements":items
+              }
+            ],
+            "data":{
+              "facebook":  {
+                  "attachment":{
+                    "type":"template",
+                    "payload":{
+                      "template_type":"generic",
+                      "elements":elements
+                    }
                   }
                 }
-              }
-            ]
+            }
           });
 
 
