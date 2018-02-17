@@ -36,29 +36,6 @@ app.get('/webhook',(req,res)=>{
 // receives all webhook events
 app.post('/webhook',(req,res) => {
   console.log(req.body);
-
-  let body = req.body;
-  if(body.object == 'page'){
-    body.entry.forEach((entry)=>{
-
-        //body of the webhook event
-        let webhook_event = entry.messaging[0];
-        console.log(webhook_event);
-
-        //get sender PSID
-        let sender_psid = webhook_event.sender.id;
-        console.log('Sender PSID:'+sender_psid);
-    });
-
-    res.status(200).send('EVENT_RECEIVED');
-  }else{
-    res.sendStatus(404);
-  }
-
-});
-
-
-function handleMessage(sender_psid,received_message){
   //CALL NEWS API AND EXTRACT PARAMETERS FROM REQ.BODY.PARAMETERS
   const ACTION=req.body.result.action;
   console.log('action',ACTION);
@@ -103,6 +80,18 @@ function handleMessage(sender_psid,received_message){
                 "platform":"google",
                 "items":items,
                 "type":"carousel_card"
+              },
+              {
+                "platform":"google",
+                "suggestions":[
+                  {
+                    "title":"Chip one"
+                  },
+                  {
+                    "title":"Chip Two"
+                  }
+                ],
+                "type":"suggestion_chips"
               }
             ]
           });
@@ -156,6 +145,12 @@ function handleMessage(sender_psid,received_message){
 
     });
   }
+
+});
+
+
+function handleMessage(sender_psid,received_message){
+
 }
 
 function handlePostback(sender_psid,received_postback){
