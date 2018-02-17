@@ -162,6 +162,6 @@ function handlePostback(sender_psid,received_postback){
 
 }
 
-function call sendAPI(sender_psid,response){
+function sendAPI(sender_psid,response){
 
 }
